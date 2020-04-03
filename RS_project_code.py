@@ -1,5 +1,8 @@
 # Project: ABE6035 Remote Sensing Project - Spring 2020
 # Description: Code to calculate the apparent temperature (T_AP)
+
+# This will produce radiative forcing (power density)
+
 # Authors: Stephen Lantin, J. Barrett Carter
 # Date Created: April 2, 2020
 
@@ -39,15 +42,20 @@ def temperature(z):
 
 # # Calculation of upwelling and downwelling temperature
 
-# def t_up(theta,H,kappa):
-#     # optical thickness (probably have to assume a constant kappa, unless you find new data)
-#     # if the kappa we find is dependent on z, then we'll have to do symbolic integration
-#     # because tau contains an integration over z that feeds into the overall integration of z'.
-#     result = (1/np.cos(theta))*integrate.quad(lambda zp: kappa*temperature(zp)*np.exp(-(kappa*H-kappa*zp)*1/np.cos(theta)),0,H)
-#     return result
 
-# def t_dn(theta,H,kappa):
-#     result = (1/np.cos(theta))*integrate.quad(lambda zp: kappa*temperature(zp)*np.exp(-(kappa*zp)*1/np.cos(theta)),0,np.inf)
+# to the tropopause only (as per definition of radiative forcing)
+def t_up(theta,H,kappa):
+    # optical thickness (probably have to assume a constant kappa, unless you find new data)
+    # if the kappa we find is dependent on z, then we'll have to do symbolic integration
+    # because tau contains an integration over z that feeds into the overall integration of z'.
+    result = (1/np.cos(theta))*integrate.quad(lambda zp: kappa*temperature(zp)*np.exp(-(kappa*H-kappa*zp)*1/np.cos(theta)),0,H)
+    return result
+
+def t_dn(theta,H,kappa):
+    result = (1/np.cos(theta))*integrate.quad(lambda zp: kappa*temperature(zp)*np.exp(-(kappa*zp)*1/np.cos(theta)),0,np.inf)
 #     return result
 print(temperature(0))
 print(temperature(12000))
+
+
+# integrate the spectral power density and integrate to get the overall power density and radiative forcing

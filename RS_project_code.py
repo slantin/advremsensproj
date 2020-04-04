@@ -15,6 +15,11 @@ import scipy.integrate as integrate
 # Theoretical model for Ka_CO2 in the troposphere can be found in: Absorption coefficient of carbon dioxide
 # across atmospheric troposphere layer (Wei et al., 2018)
 
+# exponential wide-band model
+
+
+
+
 #Ka_CH4 = ...
 #Ka_CO2 = ...
 

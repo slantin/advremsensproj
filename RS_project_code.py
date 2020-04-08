@@ -15,11 +15,19 @@ import scipy.integrate as integrate
 # Theoretical model for Ka_CO2 in the troposphere can be found in: Absorption coefficient of carbon dioxide
 # across atmospheric troposphere layer (Wei et al., 2018)
 
+# We use a wide-band model to "provide correlations of band characteristics over the entire wave number region 
+# of a band [while accounting] for increasing importance of weakly absorbing lines in the wings of the band as the 
+# radiation path length becomes large." Specifically, the exponential wide-band model (Edwards and Menard, 1964) is
+# used to model a band of rotation lines that are reordered in wave number so they form an array with exponentially
+# decreasing line intensities moving away from the band center, and covering the entire band.
+
+# The wide-band model parameters can be used to derive the absorption coefficient, kappa
+
 # EXPONENTIAL WIDE-BAND MODEL PARAMETERS
 
 h = 6.626*10**(-34) # J*s
 c = 299792458 # m/s
-k = 1.381 * 10**(-23) #J/K
+k = 1.381*10**(-23) #J/K
 T0 = 100 # K
 
 # CO2
@@ -47,7 +55,7 @@ ch4_d1s = [0,0,1,1]
 ch4_d2s = [0,0,0,1]
 ch4_d3s = [0,1,0,0]
 ch4_d4s = [1,0,1,1]
-ch4_bs = [1.3,1.3,1.3,1.3,1.3,1.3] # pressure parameter at T0 = 100K
+ch4_bs = [1.3,1.3,1.3,1.3] # pressure parameter at T0 = 100K
 ch4_ns = [0.8,0.8,0.8,0.8] # pressure parameter at T0 = 100K
 ch4_alpha_0s = [28.0,46.0,2.9,0.42]
 ch4_beta_0s = [0.08698,0.06973,0.35429,0.13219]
@@ -66,6 +74,11 @@ co2[:,7] = co2_alpha_0s
 co2[:,8] = co2_beta_0s
 co2[:,9] = co2_omega_0s
 
+#properties matrix
+co2_properties = np.zeros(3,2)
+co2_properties[:,0] = co2_etas
+co2_properties[:,1] = co2_gs
+
 # assign values to parameter matrix: band, band center, d1, d2, d3, d4, b, n, alpha_0, beta_0, omega_0
 ch4 = np.zeros((4,11))
 ch4[:,0] = ch4_bands
@@ -80,10 +93,28 @@ ch4[:,8] = ch4_alpha_0s
 ch4[:,9] = ch4_beta_0s
 ch4[:,10] = ch4_omega_0s
 
-# def psi_co2(temperature,dof,matrix): # temperature, degrees of freedom, matrix
-#     for k in range(0,dof):
-#         for 
+#properties matrix
+ch4_properties = np.zeros(3,2)
+ch4_properties[:,0] = ch4_etas
+ch4_properties[:,1] = ch4_gs
 
+def psi(temperature,dof,matrix,properties,band,trunc):
+# temperature, degrees of freedom, matrix, properties matrix, index x in matrix[x,0], truncation of inf in summation
+    sums = np.zeros(dof,1) # initialize sums
+    term = np.zeros(trunc,1)
+    for k in range(1,dof+1): # k goes from 1 to m
+        for nu in range(0,trunc+1): # 5 will change
+            if matrix[band,k+2] >= 0: # calculation of nu. delta vectors start at matrix[:,3]
+                term[k-1] = np.math.factorial(properties[k-1,1]+np.abs(matrix[band,k+2])-1)/\
+                    (np.math.factorial(properties[k-1,1]-1)
+                    
+            else:
+                term = 
+
+        sums(k) = 
+    result = np.multiply
+
+print(ch4)
 
 
 # alpha_0 = 

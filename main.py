@@ -228,7 +228,7 @@ def alpha(temperature,matrix): #returns alpha in m^2/(g*cm)
                 (1-(np.exp(-sum_den)*psi_0s[p])) # this will take the last value of sum num from each k loop
     return alphas
 #print(co2[:,8])
-#print(alpha(500,co2))
+print(alpha(500,co2))
 
 def beta(temperature,matrix):
     global phi_fun
@@ -242,4 +242,13 @@ def beta(temperature,matrix):
     
     return betas
 
-print(beta(500,co2))
+#print(beta(500,co2))
+
+def omega(temperature,matrix):
+    omegas = np.zeros((np.size(matrix,0),1))
+    dof = int(matrix[0,0])
+    for p in range(0,np.size(matrix,0)):
+        omegas[p] = matrix[p,dof+7]*(temperature/t_0)**(1/2)
+    return omegas
+
+#print(omega(500,co2))
